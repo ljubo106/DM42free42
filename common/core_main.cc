@@ -54,10 +54,10 @@ int my_rename(const char *oldname, const char *newname);
 static void handle_shifted_persistent_custom_menu(bool do_redisplay, bool do_display_x)
 {
     if(persistent_custom_menu) {
-        int *front_menu = get_front_menu();
-        if (front_menu != NULL && (*front_menu == MENU_CUSTOM1
-                                   || *front_menu == MENU_CUSTOM2
-                                   || *front_menu == MENU_CUSTOM3)) {
+        int front_menu = get_front_menu();
+        if (front_menu == MENU_CUSTOM1
+            || front_menu == MENU_CUSTOM2
+            || front_menu == MENU_CUSTOM3) {
             int menu = mode_plainmenu;
             int level = MENULEVEL_PLAIN;
             const menu_spec *m = menus + menu;

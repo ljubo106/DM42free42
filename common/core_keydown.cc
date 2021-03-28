@@ -95,11 +95,11 @@ static void view(const char *varname, int varlength) {
 static void update_last_custom_menu()
 {
     if (persistent_custom_menu && !flags.f.prgm_mode) {
-        int *front_menu = get_front_menu();
-        if (front_menu != NULL && (*front_menu == MENU_CUSTOM1
-                                   || *front_menu == MENU_CUSTOM2
-                                   || *front_menu == MENU_CUSTOM3)) {
-            last_custom_menu = *front_menu;
+        int front_menu = get_front_menu();
+        if (front_menu == MENU_CUSTOM1
+            || front_menu == MENU_CUSTOM2
+            || front_menu == MENU_CUSTOM3) {
+            last_custom_menu = front_menu;
         }
     }
 }
@@ -108,16 +108,16 @@ static void handle_persistent_custom_menu(int shift, int key)
 {
     // In prgm mode disable persistent custome menu (enable easy "Exit" from custom mode)
     if (persistent_custom_menu && !flags.f.prgm_mode) {
-        int *front_menu = get_front_menu();
-        if ( front_menu == NULL ) {           // if no menu is active
+        int front_menu = get_front_menu();
+        if ( front_menu == MENU_NONE ) {      // if no menu is active
             set_plainmenu(last_custom_menu);  // activate custom menu
         } else {
             // Some menu is active, check if CUSTOM is pressed from a custom menu
             // and deactivate it once
             if (shift && key == KEY_2
-                && (*front_menu == MENU_CUSTOM1
-                    || *front_menu == MENU_CUSTOM2
-                    || *front_menu == MENU_CUSTOM3)) {
+                && (front_menu == MENU_CUSTOM1
+                    || front_menu == MENU_CUSTOM2
+                    || front_menu == MENU_CUSTOM3)) {
                 set_menu(MENULEVEL_PLAIN, MENU_NONE);
                 redisplay();
             }
