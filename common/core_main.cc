@@ -42,6 +42,30 @@
 #endif
 
 
+static void handle_shifted_persistent_custom_menu(bool do_redisplay, bool do_display_x)
+{
+    if(persistent_custom_menu) {
+        int *front_menu = get_front_menu();
+        if (front_menu != NULL && (*front_menu == MENU_CUSTOM1
+                                   || *front_menu == MENU_CUSTOM2
+                                   || *front_menu == MENU_CUSTOM3)) {
+            int menu = mode_plainmenu;
+            int level = MENULEVEL_PLAIN;
+            const menu_spec *m = menus + menu;
+            int nextmenu = mode_shift ? m->prev : m->next;
+            if (nextmenu != MENU_NONE) {
+                set_menu(level, nextmenu);
+                if(do_redisplay) {
+                    redisplay();
+                }
+                if(do_display_x) {
+                    display_x(0);
+                }
+            }
+        }
+    }
+}
+
 static void set_shift(bool state) {
     if (mode_shift != state) {
         mode_shift = state;
@@ -234,6 +258,7 @@ int core_keydown(int key, int *enqueued, int *repeat) {
 
     if (key == KEY_SHIFT) {
         set_shift(!mode_shift);
+        handle_shifted_persistent_custom_menu(true, false);
         return (mode_running && !mode_getkey && !mode_pause) || keybuf_head != keybuf_tail;
     }
 
@@ -385,10 +410,14 @@ int core_keydown(int key, int *enqueued, int *repeat) {
         if (mode_getkey && mode_running)
             shell_annunciators(-1, -1, -1, 1, -1, -1);
         keydown(shift, key);
+        if(shift) {
+            handle_shifted_persistent_custom_menu(key != KEY_DOT, key == KEY_EXIT);
+        }
         if (repeating != 0) {
             *repeat = repeating;
             repeating = 0;
         }
+
         return mode_running && !mode_getkey;
     }
 
