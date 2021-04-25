@@ -31,7 +31,7 @@
 
 int no_menu_key_this_time = 0;
 
-static int last_custom_menu = MENU_CUSTOM1;
+int last_custom_menu = MENU_CUSTOM1;
 
 static int is_number_key(int shift, int key) {
     if (get_front_menu() == MENU_BASE_A_THRU_F && !no_menu_key_this_time
@@ -112,9 +112,11 @@ static void handle_persistent_custom_menu(int shift, int key)
         if ( front_menu == MENU_NONE ) {      // if no menu is active
             set_plainmenu(last_custom_menu);  // activate custom menu
         } else {
-            // Some menu is active, check if CUSTOM is pressed from a custom menu
-            // and deactivate it once
-            if (shift && key == KEY_2
+            // Some menu is active
+            // Check if CUSTOM is pressed from a custom menu
+            // and deactivate it once (do that only if app menu is not activ)
+            if (mode_appmenu == MENU_NONE
+                && shift && key == KEY_2 
                 && (front_menu == MENU_CUSTOM1
                     || front_menu == MENU_CUSTOM2
                     || front_menu == MENU_CUSTOM3)) {

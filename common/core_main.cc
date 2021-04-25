@@ -55,9 +55,10 @@ static void handle_shifted_persistent_custom_menu(bool do_redisplay, bool do_dis
 {
     if(persistent_custom_menu) {
         int front_menu = get_front_menu();
-        if (front_menu == MENU_CUSTOM1
-            || front_menu == MENU_CUSTOM2
-            || front_menu == MENU_CUSTOM3) {
+        if (mode_appmenu == MENU_NONE &&
+            (front_menu == MENU_CUSTOM1
+             || front_menu == MENU_CUSTOM2
+             || front_menu == MENU_CUSTOM3)) {
             int menu = mode_plainmenu;
             int level = MENULEVEL_PLAIN;
             const menu_spec *m = menus + menu;

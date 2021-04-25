@@ -22,6 +22,7 @@
 
 
 const bool persistent_custom_menu = true; // Go automatically to the CUSTOM menu if no other menu is active
+extern int last_custom_menu;
 
 
 /**********************************/
