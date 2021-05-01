@@ -51,25 +51,57 @@ int my_rename(const char *oldname, const char *newname);
 #endif
 
 
-static void handle_shifted_persistent_custom_menu(bool do_redisplay, bool do_display_x)
+
+static bool pcm_shifted = false;
+
+static void shift_pcm()
 {
     if(persistent_custom_menu) {
         int front_menu = get_front_menu();
-        if (mode_appmenu == MENU_NONE &&
-            (front_menu == MENU_CUSTOM1
-             || front_menu == MENU_CUSTOM2
-             || front_menu == MENU_CUSTOM3)) {
+        if (mode_commandmenu == MENU_NONE
+            && mode_alphamenu == MENU_NONE
+            && mode_transientmenu == MENU_NONE
+            && mode_appmenu == MENU_NONE
+            && (front_menu == MENU_CUSTOM1
+                || front_menu == MENU_CUSTOM2
+                || front_menu == MENU_CUSTOM3)) {
             int menu = mode_plainmenu;
-            int level = MENULEVEL_PLAIN;
             const menu_spec *m = menus + menu;
-            int nextmenu = mode_shift ? m->prev : m->next;
+            int nextmenu = m->prev;
             if (nextmenu != MENU_NONE) {
-                set_menu(level, nextmenu);
-                if(do_redisplay) {
-                    redisplay();
-                }
-                if(do_display_x) {
-                    display_x(0);
+                set_menu(MENULEVEL_PLAIN, nextmenu);
+                redisplay();
+                pcm_shifted=true;
+            }
+        }
+    }
+}
+
+
+static void unshift_pcm(bool do_redisplay, bool do_display_x)
+{
+    if(persistent_custom_menu) {
+        pcm_shifted = false;
+        int menu = mode_plainmenu;
+        if (menu == MENU_CUSTOM1
+            || menu == MENU_CUSTOM2
+            || menu == MENU_CUSTOM3) {
+            const menu_spec *m = menus + menu;
+            int nextmenu = m->next;
+            if (nextmenu != MENU_NONE) {
+                if (mode_commandmenu == MENU_NONE
+                    && mode_alphamenu == MENU_NONE
+                    && mode_transientmenu == MENU_NONE
+                    && mode_appmenu == MENU_NONE) {
+                    set_menu(MENULEVEL_PLAIN, nextmenu);
+                    if(do_redisplay) {
+                        redisplay();
+                    }
+                    if(do_display_x) {
+                        display_x(0);
+                    }
+                } else {
+                    mode_plainmenu = nextmenu;
                 }
             }
         }
@@ -247,7 +279,11 @@ bool core_keydown(int key, bool *enqueued, int *repeat) {
 
     if (key == KEY_SHIFT) {
         set_shift(!mode_shift);
-        handle_shifted_persistent_custom_menu(true, false);
+        if(mode_shift) {
+            shift_pcm();
+        } else {
+            unshift_pcm(true, false);
+        }
         return (mode_running && !mode_getkey && !mode_pause) || keybuf_head != keybuf_tail;
     }
 
@@ -399,8 +435,8 @@ bool core_keydown(int key, bool *enqueued, int *repeat) {
         if (mode_getkey && mode_running)
             shell_annunciators(-1, -1, -1, 1, -1, -1);
         keydown(shift, key);
-        if(shift) {
-            handle_shifted_persistent_custom_menu(key != KEY_DOT, key == KEY_EXIT);
+        if(pcm_shifted) {
+            unshift_pcm(key != KEY_DOT, key == KEY_EXIT);
         }
         if (repeating != 0) {
             *repeat = repeating;
