@@ -21,6 +21,10 @@
 #include "free42.h"
 
 
+const bool persistent_custom_menu = true; // Go automatically to the CUSTOM menu if no other menu is active
+extern int last_custom_menu;
+
+
 /**********************************/
 /* Shell/Core interface functions */
 /**********************************/
