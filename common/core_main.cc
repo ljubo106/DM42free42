@@ -782,7 +782,7 @@ void core_dm42f3()
     }
 }
 
-void core_toggle_custom_persistent_menu()
+void core_toggle_persistent_custom_menu()
 {
     persistent_custom_menu = !persistent_custom_menu;
 }
