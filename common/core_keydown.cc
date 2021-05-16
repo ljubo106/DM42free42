@@ -31,8 +31,6 @@
 
 int no_menu_key_this_time = 0;
 
-int last_custom_menu = MENU_CUSTOM1;
-
 static int is_number_key(int shift, int key) {
     if (get_front_menu() == MENU_BASE_A_THRU_F && !no_menu_key_this_time
             && (key == KEY_SIGMA || key == KEY_INV || key == KEY_SQRT
