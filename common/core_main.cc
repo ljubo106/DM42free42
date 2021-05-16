@@ -774,12 +774,17 @@ void core_dm42f3()
 
         arg.type = ARGTYPE_STR;
         arg.length = strlen(cmd);
-        for (int i = 0; i < strlen(cmd); i++)
+        for (int i = 0; i < arg.length; i++) {
             arg.val.text[i] = cmd[i];
-
+        }
         int error = handle(CMD_XEQ, &arg);
         handle_error(error);
     }
+}
+
+void core_toggle_custom_persistent_menu()
+{
+    persistent_custom_menu = !persistent_custom_menu;
 }
 
 #ifdef ARM

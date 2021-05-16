@@ -311,9 +311,15 @@ void core_update_allow_big_stack();
 
 /* core_dm42f3()
  *
- * Executes user defined DM42F3 function
+ * Executes user defined "DM42F3" function.
  */
 void core_dm42f3();
+
+/* core_toggle_persistent_custom_menu()
+ *
+ * Toggles persistent custom menu functionality.
+ */
+void core_toggle_persistent_custom_menu();
 
 /* core_settings
  *
