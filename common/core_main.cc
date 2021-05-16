@@ -768,16 +768,18 @@ void core_update_allow_big_stack() {
 
 void core_dm42f3()
 {
-    const char *cmd = "DM42F3";
-    arg_struct arg;
+    if(!flags.f.prgm_mode) {
+        const char *cmd = "DM42F3";
+        arg_struct arg;
 
-    arg.type = ARGTYPE_STR;
-    arg.length = strlen(cmd);
-    for (int i = 0; i < strlen(cmd); i++)
-        arg.val.text[i] = cmd[i];
+        arg.type = ARGTYPE_STR;
+        arg.length = strlen(cmd);
+        for (int i = 0; i < strlen(cmd); i++)
+            arg.val.text[i] = cmd[i];
 
-    int error = handle(CMD_XEQ, &arg);
-    handle_error(error);
+        int error = handle(CMD_XEQ, &arg);
+        handle_error(error);
+    }
 }
 
 #ifdef ARM
