@@ -56,7 +56,7 @@ static bool pcm_shifted = false;
 
 static void shift_pcm()
 {
-    if(persistent_custom_menu) {
+    if(persistent_custom_menu && flags.f.local_label == 0) {
         int front_menu = get_front_menu();
         if (mode_commandmenu == MENU_NONE
             && mode_alphamenu == MENU_NONE
@@ -80,7 +80,7 @@ static void shift_pcm()
 
 static void unshift_pcm(bool do_redisplay, bool do_display_x)
 {
-    if(persistent_custom_menu) {
+    if(persistent_custom_menu && flags.f.local_label == 0) {
         pcm_shifted = false;
         int menu = mode_plainmenu;
         if (menu == MENU_CUSTOM1
