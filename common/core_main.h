@@ -326,11 +326,36 @@ void core_update_allow_big_stack();
  */
 void core_dm42f3();
 
-/* core_toggle_persistent_custom_menu()
+/* core_pcm_set()
  *
- * Toggles persistent custom menu functionality.
+ * Set persistent custom menu functionality.
  */
-void core_toggle_persistent_custom_menu();
+void core_pcm_set(bool set);
+
+/* core_pcm_get()
+ *
+ * Get persistent custom menu functionality.
+ */
+bool core_pcm_get();
+
+/* core_pcm_shift_config
+ *
+ */
+enum core_pcm_shift_config {PCM_SHIFT_NONE, PCM_SHIFT_UP, PCM_SHIFT_DOWN};
+
+/* core_pcm_set_shift
+ *
+ * Set persistent custom menu shift functionality.
+ */
+void core_pcm_shift_set(core_pcm_shift_config set);
+
+/* core_pcm_get_shift
+ *
+ * Get persistent custom menu shift functionality.
+ */
+core_pcm_shift_config core_pcm_shift_get();
+
+
 
 /* core_settings
  *

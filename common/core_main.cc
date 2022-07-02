@@ -56,7 +56,7 @@ static bool pcm_shifted = false;
 
 static void shift_pcm()
 {
-    if(persistent_custom_menu && flags.f.local_label == 0) {
+    if(persistent_custom_menu && persistent_custom_menu_shift_config != PCM_SHIFT_NONE && flags.f.local_label == 0) {
         int front_menu = get_front_menu();
         if (mode_commandmenu == MENU_NONE
             && mode_alphamenu == MENU_NONE
@@ -67,7 +67,7 @@ static void shift_pcm()
                 || front_menu == MENU_CUSTOM3)) {
             int menu = mode_plainmenu;
             const menu_spec *m = menus + menu;
-            int nextmenu = m->prev;
+            int nextmenu = persistent_custom_menu_shift_config == PCM_SHIFT_UP? m->prev : m->next;
             if (nextmenu != MENU_NONE) {
                 set_menu(MENULEVEL_PLAIN, nextmenu);
                 redisplay();
@@ -80,14 +80,14 @@ static void shift_pcm()
 
 static void unshift_pcm(bool do_redisplay, bool do_display_x)
 {
-    if(persistent_custom_menu && flags.f.local_label == 0) {
+    if(persistent_custom_menu && persistent_custom_menu_shift_config != PCM_SHIFT_NONE && flags.f.local_label == 0) {
         pcm_shifted = false;
         int menu = mode_plainmenu;
         if (menu == MENU_CUSTOM1
             || menu == MENU_CUSTOM2
             || menu == MENU_CUSTOM3) {
             const menu_spec *m = menus + menu;
-            int nextmenu = m->next;
+            int nextmenu = persistent_custom_menu_shift_config == PCM_SHIFT_UP? m->next : m->prev;
             if (nextmenu != MENU_NONE) {
                 if (mode_commandmenu == MENU_NONE
                     && mode_alphamenu == MENU_NONE
@@ -780,9 +780,24 @@ void core_dm42f3()
     }
 }
 
-void core_toggle_persistent_custom_menu()
+void core_pcm_set(bool set)
 {
-    persistent_custom_menu = !persistent_custom_menu;
+    persistent_custom_menu = set;
+}
+
+bool core_pcm_get()
+{
+    return persistent_custom_menu;
+}
+
+void core_pcm_shift_set(core_pcm_shift_config set)
+{
+    persistent_custom_menu_shift_config = set;
+}
+
+core_pcm_shift_config core_pcm_shift_get()
+{
+    return persistent_custom_menu_shift_config;
 }
 
 #ifdef ARM

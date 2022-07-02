@@ -5099,3 +5099,4 @@ bool off_enabled() {
 /* Persistent custom menu DM42 firmware mod */
 bool persistent_custom_menu = true; // Go automatically to the CUSTOM menu if no other menu is active
 int last_custom_menu = MENU_CUSTOM1;
+core_pcm_shift_config persistent_custom_menu_shift_config = PCM_SHIFT_UP;
