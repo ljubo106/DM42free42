@@ -24,6 +24,7 @@
 #include "core_phloat.h"
 #include "core_tables.h"
 #include "core_variables.h"
+#include "core_main.h"
 
 #ifdef ARM
 extern int* gfile;
@@ -585,5 +586,10 @@ void hard_reset(int reason);
 #ifdef IPHONE
 bool off_enabled();
 #endif
+
+/* Persistent custom menu DM42 firmware mod */
+extern bool persistent_custom_menu; // Go automatically to the CUSTOM menu if no other menu is active
+extern int last_custom_menu;
+extern core_pcm_shift_config persistent_custom_menu_shift_config;
 
 #endif
