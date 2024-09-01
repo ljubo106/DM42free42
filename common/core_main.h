@@ -323,6 +323,43 @@ void core_paste(const char *s);
  */
 void core_update_allow_big_stack();
 
+/* core_dm42f3()
+ *
+ * Executes user defined "DM42F3" function.
+ */
+void core_dm42f3();
+
+/* core_pcm_set()
+ *
+ * Set persistent custom menu functionality.
+ */
+void core_pcm_set(bool set);
+
+/* core_pcm_get()
+ *
+ * Get persistent custom menu functionality.
+ */
+bool core_pcm_get();
+
+/* core_pcm_shift_config
+ *
+ */
+enum core_pcm_shift_config {PCM_SHIFT_NONE, PCM_SHIFT_UP, PCM_SHIFT_DOWN};
+
+/* core_pcm_set_shift
+ *
+ * Set persistent custom menu shift functionality.
+ */
+void core_pcm_shift_set(core_pcm_shift_config set);
+
+/* core_pcm_get_shift
+ *
+ * Get persistent custom menu shift functionality.
+ */
+core_pcm_shift_config core_pcm_shift_get();
+
+
+
 /* core_settings
  *
  * This is a struct that stores user-configurable core settings. The shell
